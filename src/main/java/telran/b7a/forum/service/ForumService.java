@@ -7,15 +7,15 @@ import telran.b7a.forum.dto.ResponseDto;
 public interface ForumService {
 	ResponseDto addPost(AddPostDto addPostDto, String author);
 	
-	ResponseDto findPostById(Integer id); 
+	ResponseDto findPostById(String id); 
 	
-	ResponseDto deletePost(Integer id);
+	ResponseDto deletePost(String id);
 	
-	ResponseDto updatePost(Integer id, AddPostDto addPostDto);
+	ResponseDto updatePost(String id, AddPostDto addPostDto);
 	
-	void addLikeToPost(Integer id);
+	void addLikeToPost(String id);
 	
-	ResponseDto addCommentToPost(Integer id, String author, AddCommentDto addCommentDto);
+	ResponseDto addCommentToPost(String id, String author, AddCommentDto addCommentDto);
 	
 	ResponseDto findPostsByAuthor(String author);
 }

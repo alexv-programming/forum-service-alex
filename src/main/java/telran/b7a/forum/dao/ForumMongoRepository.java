@@ -8,6 +8,6 @@ import telran.b7a.forum.model.Post;
 
 public interface ForumMongoRepository extends MongoRepository<Post, Integer> {
 	
-	//Optional<Post> findById(Integer id);
+	Optional<Post> findById(String id);
 
 }

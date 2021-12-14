@@ -22,7 +22,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = { "id" })
 public class Post {
 	@Id
-	int id;
+	String id;
 	@Setter
 	String title;
 	@Setter
@@ -44,6 +44,8 @@ public class Post {
 		this.tags = tags;
 	}
 	
+	
+	
 	public void addLike() {
 		likes++;
 	}
@@ -58,5 +60,11 @@ public class Post {
 //
 	public boolean addComment(Comment comment) {
 		return comments.add(comment);
+	}
+
+
+
+	public void setDateCreated() {
+		this.dateCreated = LocalDateTime.now();
 	}
 }

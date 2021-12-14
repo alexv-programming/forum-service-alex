@@ -30,7 +30,7 @@ public class ForumController {
 	}
 
 	@GetMapping("/post/{id}")
-	public ResponseDto findPostById(@PathVariable Integer id) {
+	public ResponseDto findPostById(@PathVariable String id) {
 		return forumService.findPostById(id);
 	}
 }

@@ -28,37 +28,38 @@ public class ForumServiceImp implements ForumService {
 	public ResponseDto addPost(AddPostDto addPostDto, String author) {
 		Post post = modelMapper.map(addPostDto, Post.class);
 		post.setAuthor(author);
+		post.setDateCreated();
 		forumRepository.save(post);
 		return modelMapper.map(post, ResponseDto.class);
 	}
 
 	@Override
-	public ResponseDto findPostById(Integer id) {
+	public ResponseDto findPostById(String id) {
 		Post post = forumRepository.findById(id)
 				.orElseThrow(() -> new PostNotFoundException(id));
 		return modelMapper.map(post, ResponseDto.class);
 	}
 
 	@Override
-	public ResponseDto deletePost(Integer id) {
+	public ResponseDto deletePost(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ResponseDto updatePost(Integer id, AddPostDto addPostDto) {
+	public ResponseDto updatePost(String id, AddPostDto addPostDto) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public void addLikeToPost(Integer id) {
+	public void addLikeToPost(String id) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public ResponseDto addCommentToPost(Integer id, String author, AddCommentDto addCommentDto) {
+	public ResponseDto addCommentToPost(String id, String author, AddCommentDto addCommentDto) {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.data.annotation.Id;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
@@ -18,6 +20,7 @@ import lombok.Singular;
 @NoArgsConstructor
 @Builder
 public class ResponseDto {
+	@Id
 	String id;
 	@Setter
 	String title;
