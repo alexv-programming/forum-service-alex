@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import telran.b7a.forum.model.Comment;
 
 @Getter
 @AllArgsConstructor
@@ -22,5 +21,5 @@ public class ResponseDto {
 	LocalDateTime dateCreated;
 	Set<String> tags;
 	Integer likes;
-	List<Comment> comments;
+	List<ResponseCommentDto> comments;
 }
