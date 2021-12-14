@@ -28,7 +28,7 @@ public class ForumController {
 	}
 
 	@GetMapping("/forum/post/{id}")
-	public ResponseDto findPostById(Integer id) {
+	public ResponseDto findPostById(@PathVariable Integer id) {
 		return forumService.findPostById(id);
 	}
 }
