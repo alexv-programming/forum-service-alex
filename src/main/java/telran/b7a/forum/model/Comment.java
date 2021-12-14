@@ -1,23 +1,22 @@
-package telran.b7a.forum.dto;
+package telran.b7a.forum.model;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
-@AllArgsConstructor
+@ToString
 @NoArgsConstructor
-@Builder
-public class ResponseCommentDto {
+@AllArgsConstructor
+public class Comment {
 	String user;
 	String message;
-	@JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd_HH:mm:ss")
 	LocalDateTime dateCreated;
-	Integer likes;
+	int likes;
 }
