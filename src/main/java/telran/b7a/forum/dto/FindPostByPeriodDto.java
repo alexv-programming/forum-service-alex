@@ -15,9 +15,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 public class FindPostByPeriodDto {
-	@JsonFormat
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	LocalDate dateFrom;
-	@JsonFormat
+	@JsonFormat(pattern = "yyyy-MM-dd")
     LocalDate dateTo;
 
 }
