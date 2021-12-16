@@ -16,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import telran.b7a.forum.dto.AddPostDto;
 
 @NoArgsConstructor
 @Getter
@@ -29,10 +30,11 @@ public class Post {
 	String content;
 	@Setter
 	String author;
-	@JsonFormat // (pattern = "yyyy-MM-dd_HH:mm:ss")
+	@JsonFormat //(pattern = "yyyy-MM-dd_HH:mm:ss")
 	LocalDateTime dateCreated;
+	@Setter
 	Set<String> tags = new HashSet<String>();
-	int likes;
+	int likes = 0;
 	List<Comment> comments = new ArrayList<Comment>();
 
 	public Post(String title, String content, String author, Set<String> tags) {
@@ -40,11 +42,8 @@ public class Post {
 		this.content = content;
 		this.author = author;
 		dateCreated = LocalDateTime.now();
-		likes = 0;
 		this.tags = tags;
 	}
-	
-	
 	
 	public void addLike() {
 		likes++;
@@ -61,9 +60,7 @@ public class Post {
 	public boolean addComment(Comment comment) {
 		return comments.add(comment);
 	}
-
-
-
+	
 	public void setDateCreated() {
 		this.dateCreated = LocalDateTime.now();
 	}

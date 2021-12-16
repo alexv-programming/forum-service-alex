@@ -1,7 +1,10 @@
 package telran.b7a.forum.service;
 
+import java.util.List;
+
 import telran.b7a.forum.dto.AddCommentDto;
 import telran.b7a.forum.dto.AddPostDto;
+import telran.b7a.forum.dto.FindPostByPeriodDto;
 import telran.b7a.forum.dto.ResponseDto;
 
 public interface ForumService {
@@ -13,9 +16,13 @@ public interface ForumService {
 	
 	ResponseDto updatePost(String id, AddPostDto addPostDto);
 	
-	void addLikeToPost(String id);
+	Integer addLikeToPost(String id);
 	
 	ResponseDto addCommentToPost(String id, String author, AddCommentDto addCommentDto);
 	
-	ResponseDto findPostsByAuthor(String author);
+	Iterable<ResponseDto> findPostsByAuthor(String author);
+
+	Iterable<ResponseDto> findPostByPeriod(FindPostByPeriodDto findPostByPeriodDto);
+
+	Iterable<ResponseDto> findPostsByTags(List<String> tags);
 }
