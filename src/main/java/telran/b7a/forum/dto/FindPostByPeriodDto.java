@@ -11,13 +11,10 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class FindPostByPeriodDto {
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "[yyyy-MM-dd][dd-MM-yyyy]")
 	LocalDate dateFrom;
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern = "[yyyy-MM-dd][dd-MM-yyyy]")
     LocalDate dateTo;
 
 }
