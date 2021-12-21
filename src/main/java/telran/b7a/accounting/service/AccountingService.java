@@ -10,7 +10,7 @@ import telran.b7a.accounting.dto.UserLoginDto;
 public interface AccountingService {
 	ResponseUserDto registerUser(RegisterUserDto registerUserDto);
 	
-	ResponseUserDto login(UserLoginDto userLoginDto);
+	ResponseUserDto getUser(String login);
 	
 	ResponseUserDto deleteUser(String user);
 	

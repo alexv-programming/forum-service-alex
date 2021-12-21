@@ -4,12 +4,10 @@ import java.util.Optional;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import telran.b7a.accounting.model.User;
+import telran.b7a.accounting.model.UserAccount;
 
-public interface AccountingMongoRepository extends MongoRepository<User, Integer>{
+public interface AccountingMongoRepository extends MongoRepository<UserAccount, String>{
 	
-	Optional<User> findByLogin(String id);
-	
-	void deleteByLogin(String id);
+
 	
 }

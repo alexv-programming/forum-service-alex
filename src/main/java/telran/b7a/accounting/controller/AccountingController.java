@@ -1,5 +1,8 @@
 package telran.b7a.accounting.controller;
 
+import java.security.Principal;
+import java.util.Base64;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -7,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -32,8 +36,16 @@ AccountingService service;
 		return service.registerUser(registerUserDto);
 	}
 	@PostMapping("/login")
-	public ResponseUserDto login(@RequestBody UserLoginDto userLoginDto) {
-		return service.login(userLoginDto);
+	public ResponseUserDto login(Principal principal) {
+			//@PathVariable String login
+			//@RequestHeader("Authorization") String token) {
+//		token = token.split(" ")[1];
+//		byte[] bytesDecode = Base64.getDecoder().decode(token);
+//		token = new String(bytesDecode);
+////		System.out.println(token);
+//		String[] credentials = token.split(":");
+//		UserLoginDto userLoginDto = new UserLoginDto(credentials[0] , credentials[1]);
+		return service.getUser(principal.getName());
 	}
 	@DeleteMapping("/user/{user}")
 	public ResponseUserDto deleteUser(@PathVariable String user) {

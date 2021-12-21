@@ -22,7 +22,7 @@ import lombok.ToString;
 @EqualsAndHashCode(of = {"login"})
 @Builder
 @ToString
-public class User {
+public class UserAccount {
 	@Id
 	String login;
 	@Setter
@@ -34,6 +34,11 @@ public class User {
 	@Setter
 	@Singular
 	List<String> roles = new ArrayList<String>();
+	public void addRole(String upperCase) {
+		roles.add(upperCase);
+		
+	}
 	
+
 
 }

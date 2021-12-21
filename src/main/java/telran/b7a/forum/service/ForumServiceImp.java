@@ -8,9 +8,12 @@ import java.util.stream.Collectors;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.internal.bytebuddy.asm.Advice.Return;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import lombok.extern.slf4j.Slf4j;
 import telran.b7a.forum.dao.ForumMongoRepository;
 import telran.b7a.forum.dto.AddCommentDto;
 import telran.b7a.forum.dto.AddPostDto;
@@ -19,8 +22,10 @@ import telran.b7a.forum.dto.ResponseDto;
 import telran.b7a.forum.dto.exception.PostNotFoundException;
 import telran.b7a.forum.model.Comment;
 import telran.b7a.forum.model.Post;
+import telran.b7a.forum.service.logging.PostLogger;
 
 @Service
+@Slf4j
 public class ForumServiceImp implements ForumService {
 
 	ForumMongoRepository forumRepository;
@@ -56,6 +61,7 @@ public class ForumServiceImp implements ForumService {
 	}
 
 	@Override
+	@PostLogger
 	public ResponseDto updatePost(String id, AddPostDto addPostDto) {
 		Post post = forumRepository.findById(id).orElseThrow(() -> new PostNotFoundException(id));
 		updateWhatNeeded(post, addPostDto);
