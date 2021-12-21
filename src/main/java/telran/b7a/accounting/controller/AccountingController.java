@@ -37,14 +37,6 @@ AccountingService service;
 	}
 	@PostMapping("/login")
 	public ResponseUserDto login(Principal principal) {
-			//@PathVariable String login
-			//@RequestHeader("Authorization") String token) {
-//		token = token.split(" ")[1];
-//		byte[] bytesDecode = Base64.getDecoder().decode(token);
-//		token = new String(bytesDecode);
-////		System.out.println(token);
-//		String[] credentials = token.split(":");
-//		UserLoginDto userLoginDto = new UserLoginDto(credentials[0] , credentials[1]);
 		return service.getUser(principal.getName());
 	}
 	@DeleteMapping("/user/{user}")

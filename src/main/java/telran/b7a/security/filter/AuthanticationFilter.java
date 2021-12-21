@@ -16,12 +16,14 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.mindrot.jbcrypt.BCrypt;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import telran.b7a.accounting.dao.AccountingMongoRepository;
 import telran.b7a.accounting.model.UserAccount;
 
 @Service
+@Order(10)
 public class AuthanticationFilter implements Filter {
 	
 	AccountingMongoRepository repository;
@@ -92,7 +94,7 @@ public class AuthanticationFilter implements Filter {
 
 		@Override
 		public Principal getUserPrincipal() {
-			return () -> login;
+			return () -> login;		// p-> p.getAge()>18 (predicate)
 		}
 	}
 }

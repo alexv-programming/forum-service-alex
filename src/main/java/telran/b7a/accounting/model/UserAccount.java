@@ -34,11 +34,21 @@ public class UserAccount {
 	@Setter
 	@Singular
 	List<String> roles = new ArrayList<String>();
+	
+	
+
+
+	public UserAccount(String login, String password, String firstName, String lastName) {
+		this.login = login;
+		this.password = password;
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+	
+
 	public void addRole(String upperCase) {
 		roles.add(upperCase);
 		
 	}
-	
-
 
 }
