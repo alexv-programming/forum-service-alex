@@ -21,16 +21,20 @@ import org.springframework.stereotype.Service;
 
 import telran.b7a.accounting.dao.AccountingMongoRepository;
 import telran.b7a.accounting.model.UserAccount;
+import telran.b7a.security.SecurityContext;
+import telran.b7a.security.UserProfile;
 
 @Service
 @Order(10)
 public class AuthanticationFilter implements Filter {
 	
 	AccountingMongoRepository repository;
+	SecurityContext securityContext;
 	
 	@Autowired
-	public AuthanticationFilter(AccountingMongoRepository repository) {
+	public AuthanticationFilter(AccountingMongoRepository repository, SecurityContext securityContext) {
 		this.repository = repository;
+		this.securityContext = securityContext;
 	}
 
 	@Override
@@ -60,9 +64,17 @@ public class AuthanticationFilter implements Filter {
 				return;
 			} 
 			request = new WrappedRequest(request, credentials[0]);
+			UserProfile user = UserProfile.builder()
+					.login(userAccount.getLogin())
+					.password(userAccount.getPassword())
+					.roles(userAccount.getRoles())
+					.build();
+			securityContext.addUser(user);
 		}
 		chain.doFilter(request, response);
 	}
+
+
 
 	private boolean checkEndPoints(String path, String method) {
 		return !(

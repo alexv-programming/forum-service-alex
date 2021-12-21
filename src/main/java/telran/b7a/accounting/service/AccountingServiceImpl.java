@@ -86,7 +86,7 @@ public class AccountingServiceImpl implements AccountingService {
 	public ResponseRoleDto addRole(String user, String role) {
 		UserAccount userInst = repository.findById(user)
 							.orElseThrow(() -> new UserNotFoundException());
-		userInst.getRoles().add(role);
+		userInst.getRoles().add(role.toUpperCase());
 		repository.save(userInst);
 		return modelMapper.map(userInst, ResponseRoleDto.class);
 	}

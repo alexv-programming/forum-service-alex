@@ -15,22 +15,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
-import telran.b7a.accounting.dao.AccountingMongoRepository;
-import telran.b7a.accounting.model.UserAccount;
-import telran.b7a.security.SecurityContext;
-import telran.b7a.security.UserProfile;
+import telran.b7a.forum.dao.ForumMongoRepository;
+import telran.b7a.forum.dto.exception.PostNotFoundException;
+import telran.b7a.forum.model.Post;
 
 @Service
-@Order(20)
-public class AdminFilter implements Filter {
-
-	AccountingMongoRepository repository;
-	SecurityContext securityContext;
+@Order(40)
+public class OwnerOfPostFilter implements Filter {
+	ForumMongoRepository repository;
 	
 	@Autowired
-	public AdminFilter(AccountingMongoRepository repository, SecurityContext securityContext) {
+	public OwnerOfPostFilter(ForumMongoRepository repository) {
 		this.repository = repository;
-		this.securityContext = securityContext;
 	}
 
 	@Override
@@ -38,23 +34,24 @@ public class AdminFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
-		Principal principal = request.getUserPrincipal();
-		if (checkEndPoints(request.getServletPath(), request.getMethod())) {
-			UserProfile user = securityContext.getUser(principal.getName());
-			if (!user.getRoles().contains("Administrator".toUpperCase())) {
-				response.sendError(403, "You need Administrator rights.");
+		String path = request.getServletPath();
+		if (checkEndPoints(path , request.getMethod())) {
+			Principal user = request.getUserPrincipal();
+			String[] arrPath = path.split("/");
+			String id = arrPath[arrPath.length-1];
+			Post post = repository.findById(id).orElseThrow(() -> new PostNotFoundException());
+			if(!user.getName().equalsIgnoreCase(post.getAuthor())) {
+				response.sendError(401, "This is not your post to edit");
 				return;
 			}
 		}
 		chain.doFilter(request, response);
 	}
 
-
-
 	private boolean checkEndPoints(String path, String method) {
-		return 	(
-					(path.matches("[/]account[/]user[/]\\w+[/]role[/]\\w+[/]?"))
-				);
+		return (
+				("PUT".equalsIgnoreCase(method) && path.matches("/forum/post/\\w+/?"))
+//				|| ("DELETE".equalsIgnoreCase(method) && path.matches("/forum/post/\\w+/?"))
+			);
 	}
-	
 }
