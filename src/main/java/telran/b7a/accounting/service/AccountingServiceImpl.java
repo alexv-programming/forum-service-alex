@@ -101,10 +101,10 @@ public class AccountingServiceImpl implements AccountingService {
 	}
 
 	@Override
-	public boolean changePassword(ChangePasswordDto changePasswordDto) {
-		UserAccount userInst = repository.findById(changePasswordDto.getLogin())
+	public boolean changePassword(String user, String password) {
+		UserAccount userInst = repository.findById(user)
 							.orElseThrow(() -> new UserNotFoundException());
-		userInst.setPassword(BCrypt.hashpw(changePasswordDto.getPassword(), BCrypt.gensalt()));
+		userInst.setPassword(BCrypt.hashpw(password, BCrypt.gensalt()));
 		repository.save(userInst);
 		return true;
 	}

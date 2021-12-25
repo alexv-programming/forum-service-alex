@@ -55,8 +55,9 @@ AccountingService service;
 	public ResponseRoleDto deleteRole(@PathVariable String user,@PathVariable String role) {
 		return service.deleteRole(user, role);
 	}
-	@PutMapping("/user/password")
-	public void changePassword(@RequestBody ChangePasswordDto changePasswordDto) {
-		service.changePassword(changePasswordDto);
+	@PutMapping("/password")
+	public void changePassword(Principal principal, @RequestHeader("X-Password") String password) { //@RequestBody ChangePasswordDto changePasswordDto) {
+		service.changePassword(principal.getName(), password);
+				//changePasswordDto);
 	}
 }

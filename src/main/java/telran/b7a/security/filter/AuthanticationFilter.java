@@ -22,19 +22,22 @@ import org.springframework.stereotype.Service;
 import telran.b7a.accounting.dao.AccountingMongoRepository;
 import telran.b7a.accounting.model.UserAccount;
 import telran.b7a.security.SecurityContext;
+import telran.b7a.security.SessionService;
 import telran.b7a.security.UserProfile;
 
 @Service
 @Order(10)
 public class AuthanticationFilter implements Filter {
-	
 	AccountingMongoRepository repository;
 	SecurityContext securityContext;
-	
+	SessionService sessionService;
+		
 	@Autowired
-	public AuthanticationFilter(AccountingMongoRepository repository, SecurityContext securityContext) {
+	public AuthanticationFilter(AccountingMongoRepository repository, SecurityContext securityContext,
+			SessionService sessionService) {
 		this.repository = repository;
 		this.securityContext = securityContext;
+		this.sessionService = sessionService;
 	}
 
 	@Override
@@ -42,28 +45,33 @@ public class AuthanticationFilter implements Filter {
 			throws IOException, ServletException {
 		HttpServletRequest request = (HttpServletRequest) req;
 		HttpServletResponse response = (HttpServletResponse) resp;
-		//TODO
 		if (checkEndPoints(request.getServletPath(), request.getMethod())) {
 			String token = request.getHeader("Authorization");
-			if (token == null) {
+			String sessionId = request.getSession().getId();
+			UserAccount userAccount = sessionService.getUser(sessionId);
+			if (token == null && userAccount == null) {
 				response.sendError(401, "Header Authorization not found");
 				return;
 			}
-			String[] credentials = getCredentials(token).orElse(null);
-			if (credentials == null || credentials.length < 2) {
-				response.sendError(401, "Token not valid");
-				return;
+			if (token != null) {
+				String[] credentials = getCredentials(token).orElse(null);
+				if (credentials == null || credentials.length < 2) {
+					response.sendError(401, "Token not valid");
+					return;
+				}
+				userAccount = repository.findById(credentials[0]).orElse(null);
+				if (userAccount == null) {
+					response.sendError(401, "User not found");
+					return;
+				}
+				if (!BCrypt.checkpw(credentials[1], userAccount.getPassword())) {
+					response.sendError(401, "User or password not valid");
+					return;
+				}				
+				sessionService.addUser(sessionId, userAccount);
 			}
-			UserAccount userAccount = repository.findById(credentials[0]).orElse(null);
-			if (userAccount == null) {
-				response.sendError(401, "User not found");
-				return;
-			}
-			if (!BCrypt.checkpw(credentials[1], userAccount.getPassword())) {
-				response.sendError(401, "User or password not valid");
-				return;
-			} 
-			request = new WrappedRequest(request, credentials[0]);
+			request = new WrappedRequest(request, userAccount.getLogin());
+			
 			UserProfile user = UserProfile.builder()
 					.login(userAccount.getLogin())
 					.password(userAccount.getPassword())
@@ -73,8 +81,6 @@ public class AuthanticationFilter implements Filter {
 		}
 		chain.doFilter(request, response);
 	}
-
-
 
 	private boolean checkEndPoints(String path, String method) {
 		return !(

@@ -40,6 +40,10 @@ public class OwnerOfPostFilter implements Filter {
 			String[] arrPath = path.split("/");
 			String id = arrPath[arrPath.length-1];
 			Post post = repository.findById(id).orElseThrow(() -> new PostNotFoundException());
+			if (post == null) {
+				response.sendError(404);
+				return;
+			}
 			if(!user.getName().equalsIgnoreCase(post.getAuthor())) {
 				response.sendError(401, "This is not your post to edit");
 				return;
